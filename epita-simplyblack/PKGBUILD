@@ -1,0 +1,27 @@
+pkgname=epita-simplyblack
+pkgver=1.0
+pkgrel=2
+pkgdesc="A simple SDDM theme for Epita"
+arch=('any')
+license=('CCPL:cc-by-sa')
+
+source=('angle-down.png'
+        'background.png'
+        'epita.png'
+        'Main.qml'
+        'metadata.desktop'
+        'theme.conf')
+
+md5sums=('d8d1359a45fd11e05e1f13c8d175fd79'
+         '22eebc544e4559d634eaa3c1463ccdf0'
+         'aabfe4d4d7bd75d24240d22540563d0a'
+         '350ce9835d2f8268973b9f01decd25a7'
+         '5e6642f787dcece3c1eeb31935cac449'
+         '16a1c5741869c72a72788f5d294304b5')
+
+package() {
+  install -d "${srcdir}" ${pkgdir}/usr/share/sddm/themes/epita-simplyblack
+  install -Dm644 \
+    {angle-down.png,background.png,epita.png,Main.qml,metadata.desktop,theme.conf} \
+    ${pkgdir}/usr/share/sddm/themes/epita-simplyblack
+}
