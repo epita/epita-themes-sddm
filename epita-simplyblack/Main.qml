@@ -167,65 +167,68 @@ Rectangle {
 
                 Row {
                     spacing: Math.round(archlinux.height / 70)
-                    width: parent.width / 2
+                    width: parent.width
                     z: 100
 
-                    Row {
-                        z: 100
-                        width: parent.width * 1.2
-                        spacing : Math.round(archlinux.height / 70)
-                        anchors.bottom: parent.bottom
-
-                        Text {
-                            id: lblSession
-                            width: parent.width / 3; height: archlinux.height / 9
-                            text: textConstants.session
-                            verticalAlignment: Text.AlignVCenter
-                            color: "white"
-                            wrapMode: TextEdit.WordWrap
-                            font.bold: true
-                            font.pixelSize: archlinux.height / 22.5
-                        }
-
-                        ComboBox {
-                            id: session
-                            width: parent.width * 2 / 3; height: archlinux.height / 9
-                            font.pixelSize: archlinux.height / 20
-
-                            arrowIcon: "angle-down.png"
-
-                            model: sessionModel
-                            index: sessionModel.lastIndex
-
-                            KeyNavigation.backtab: password; KeyNavigation.tab: layoutBox
-                        }
+                    Text {
+                        id: lblSession
+                        width: parent.width / 6 + 18; height: archlinux.height / 9
+                        text: textConstants.session
+                        verticalAlignment: Text.AlignVCenter
+                        color: "white"
+                        wrapMode: TextEdit.WordWrap
+                        font.bold: true
+                        font.pixelSize: archlinux.height / 22.5
                     }
-                    Row {
-                        z: 101
-                        width: parent.width * 0.8
-                        spacing : archlinux.height / 27
-                        anchors.bottom: parent.bottom
 
-                        Text {
-                            id: lblLayout
-                            width: parent.width / 3; height: archlinux.height / 9
-                            text: textConstants.layout
-                            verticalAlignment: Text.AlignVCenter
-                            horizontalAlignment: Text.AlignHCenter
-                            color: "white"
-                            wrapMode: TextEdit.WordWrap
-                            font.bold: true
-                            font.pixelSize: archlinux.height / 22.5
+                    ComboBox {
+                        id: session
+                        width: parent.width / 3; height: archlinux.height / 9
+                        font.pixelSize: archlinux.height / 20
+
+                        arrowIcon: "angle-down.png"
+
+                        model: sessionModel
+                        index: sessionModel.lastIndex
+
+                        KeyNavigation.backtab: password; KeyNavigation.tab: layoutBox
+                    }
+
+                    ComboBox {
+                        id: comboLayout
+                        model: keyboard.layouts
+                        index: keyboard.currentLayout
+                        width: (parent.width / 2) - 24; height: archlinux.height / 9
+                        font.pixelSize: archlinux.height / 20
+                        arrowIcon: "angle-down.png"
+                        KeyNavigation.backtab: session; KeyNavigation.tab: loginButton
+                        onValueChanged: keyboard.currentLayout = id
+
+                        Connections {
+                            target: keyboard
+                            onCurrentLayoutChanged: combo.index = keyboard.currentLayout
                         }
 
-                        LayoutBox {
-                            id: layoutBox
-                            width: (parent.width * 2 / 3) -10; height: archlinux.height / 9
-                            font.pixelSize: archlinux.height / 20
-
-                            arrowIcon: "angle-down.png"
-
-                            KeyNavigation.backtab: session; KeyNavigation.tab: loginButton
+                        rowDelegate: Rectangle {
+                            color: "transparent"
+                            Image {
+                                id: img
+                                source: "/usr/share/sddm/flags/%1.png".arg(modelItem ? modelItem.modelData.shortName : "zz")
+                                anchors.margins: 4
+                                fillMode: Image.PreserveAspectFit
+                                anchors.left: parent.left
+                                anchors.top: parent.top
+                                anchors.bottom: parent.bottom
+                            }
+                            Text {
+                                anchors.margins: 4
+                                anchors.left: img.right
+                                anchors.top: parent.top
+                                anchors.bottom: parent.bottom
+                                verticalAlignment: Text.AlignVCenter
+                                text: modelItem ? modelItem.modelData.longName : "zz"
+                                font.pixelSize: 14
+                            }
                         }
                     }
                 }
